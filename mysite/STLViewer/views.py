@@ -4,7 +4,7 @@ from STLViewer.models import Items,Taggins
 from django.template import loader
 from django.core.paginator import Paginator
 from django.utils.text import slugify
-from .forms import TagFilter, ItemSearchForm
+from .forms import TagFilter, ItemSearchForm, TagEditor
 
 
 
@@ -15,11 +15,15 @@ def detailView(request):
 
     item = Items.objects.get(itemid=id)
     tags = Taggins.objects.filter(item=item)
+
+    tagEditor_form  = TagEditor(initial={'tagEditor': tags.values_list("tag", flat=True)})
+ 
  
 
     context = {
         "item":item,
         "tags":tags,
+        "tagEditor_form":tagEditor_form,
     }    
     return HttpResponse(template.render(context,request))
     #return HttpResponse(tags)
