@@ -1,0 +1,161 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="generator" content="">
+    <title>STL Viewer</title>
+
+    <link rel="canonical" href="">
+    
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    {{filter_form.media.css }}
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      .select2 { width: 500px !important; }
+
+      .collapse {
+        display: none;
+        &.show {
+          display: block;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+
+  </head>
+  <body>
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">STL Viewer</a>
+  
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="/STLViewer/index">Home <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+
+   
+    
+   
+
+      <form class="form-inline" action="/STLViewer/index/" method="get">
+        {{filter_form}}
+        {{search_form}}
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Suchen</button>
+      </form>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section class="py-5 text-center container">
+
+        <h1 class="fw-light">{{category.title}}</h1>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&{{ filter_tag }}&search={{search_string}}">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&{{ filter_tag }}&search={{search_string}}">previous</a>
+                {% endif %}    
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>    
+                 {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&{{ filter_tag }}&search={{search_string}}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}&{{ filter_tag }}&search={{search_string}}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        {{tag_list|length}} Tags:
+        {% for tag in tag_list %}
+                      {% if forloop.last %} 
+                        <a href="?tagFilter={{ tag}}">{{ tag}}</a>
+                      {% else %}
+                        <a href="?tagFilter={{ tag}}">{{ tag}}</a>,
+                      {% endif %}
+                  {% endfor %}        
+  </section>
+  <div class="album py-5 bg-light">
+    <div class="container">
+
+      <div class="row">
+
+        {% if page_obj %}
+        {% for item in page_obj %}
+        <div class="col-sm-3">
+          <div class="card shadow-sm">
+
+            <img class="img-responsive" src="{% get_static_prefix %}{{item.thumbnail}} ">
+
+            <div class="card-body">
+              <p class="card-text">{{item.name}} <br>
+                Tags: 
+                  {% for tag in item.getTagNames %}
+                      {% if forloop.last %} 
+                        <a href="?tagFilter={{ tag }}">{{ tag }}</a>
+                      {% else %}
+                        <a href="?tagFilter={{ tag }}">{{ tag }}</a>,
+                      {% endif %}
+                  {% endfor %}
+    
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="../item/?id={{item.itemid}}"><button type="button" class="btn btn-sm btn-outline-secondary">STL Details</button></a>
+                </div>
+                <small class="text-muted">Datum</small> 
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h2>No Images Uploaded for this category</h2>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="text-muted py-5">
+  <div class="container">
+    <p>Footertext: Foobar</p>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{{ filter_form.media.js }}
+
+
+  </body>
+</html>

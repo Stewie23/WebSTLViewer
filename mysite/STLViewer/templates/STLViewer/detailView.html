@@ -1,0 +1,19 @@
+{% if item %}
+    <ul>
+        {{item.name}} <br>
+        {% load static %}    
+        <img src="{% get_static_prefix %}{{item.thumbnail}} ">
+        <br>
+        {% if tags %}
+       Tags: 
+            {% for entry in tags %}
+                {{entry.tag}} 
+            {% endfor %}
+        {% else %}
+            <p>No Tags.</p>
+        {% endif %}
+    </li>
+    </ul>
+{% else %}
+    <p>No Items.</p>
+{% endif %}
