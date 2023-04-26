@@ -13,8 +13,11 @@
         {{item.name}} <br>
         <img src="{% get_static_prefix %}{{item.thumbnail}} ">
         <br>
-        <form class="form-inline" action="" method="get"></form>
+        <form class="form-inline" action="" method="POST">
+            {% csrf_token %}
             {{tagEditor_form}}
+            <input type="hidden" name="id" value="{{item.itemid}}">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Speichern</button>
         </form>
     </li>
     </ul>

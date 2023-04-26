@@ -49,7 +49,7 @@ class Release(models.Model):
 
 
 class Taggins(models.Model):
-    item = models.ForeignKey("Items",db_column="itemID",primary_key=True, on_delete=models.CASCADE,default='')
+    item = models.OneToOneField("Items",db_column="itemID", on_delete=models.CASCADE,default='')
     tag = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     def __str__(self):

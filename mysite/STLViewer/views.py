@@ -5,28 +5,45 @@ from django.template import loader
 from django.core.paginator import Paginator
 from django.utils.text import slugify
 from .forms import TagFilter, ItemSearchForm, TagEditor
+from .models import Taggins
+from django.shortcuts import redirect
 
 
 
 def detailView(request):
-    # Obtain the context from the HTTP request.
-    id = request.GET.get("id", None)
-    template = loader.get_template("STLViewer/detailView.html")
-
-    item = Items.objects.get(itemid=id)
-    tags = Taggins.objects.filter(item=item)
-
-    tagEditor_form  = TagEditor(initial={'tagEditor': tags.values_list("tag", flat=True)})
- 
- 
-
-    context = {
-        "item":item,
-        "tags":tags,
-        "tagEditor_form":tagEditor_form,
-    }    
-    return HttpResponse(template.render(context,request))
-    #return HttpResponse(tags)
+    if request.method == "POST":
+        form = TagEditor(request.POST)
+        if form.is_valid():
+            id = request.POST.get("id")
+            #do something with the tags 
+            #delete all the old taggins for this id
+            Taggins.objects.filter(item=id).delete()
+            #write new ids 
+            item = Items.objects.get(itemid=id)
+            tags = form.cleaned_data['tagEditor']
+            for tag in tags:
+                tag_obj = Taggins(item=item, tag=tag)
+                tag_obj.save()
+                
+            #redirect to the same page, id is supplied by a hidden field
+            return redirect('/STLViewer/item/?id='+id)        
+        else:
+            errors = form.errors.as_data()
+            print(errors)
+    else:
+        # Obtain the context from the HTTP request.
+        id = request.GET.get("id", None)
+        template = loader.get_template("STLViewer/detailView.html")
+        item = Items.objects.get(itemid=id)
+        tags = Taggins.objects.filter(item=item)
+        tagEditor_form  = TagEditor(initial={'tagEditor': list(tags.values_list("tag", flat=True))})
+        context = {
+            "item":item,
+            "tags":tags,
+            "tagEditor_form":tagEditor_form,
+        }    
+        return HttpResponse(template.render(context,request))
+        #return HttpResponse(tags)
 
 def basicView(request):
     #post data, generated from forms
