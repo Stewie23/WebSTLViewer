@@ -75,6 +75,12 @@ def basicView(request):
     #tag list
     tag_list = Taggins.objects.values_list("tag",flat=True).distinct()
 
+    #list of items with no tags
+    itemsWithTag_list = Taggins.objects.all().values_list("item_id",flat=True).distinct()
+    noTag_list = Items.objects.all().exclude(itemid__in = itemsWithTag_list)
+    
+    
+
     #form content
     filter_form  = TagFilter(initial={'tagFilter': filter_tag})
     search_form = ItemSearchForm(initial={'search': search_string})
