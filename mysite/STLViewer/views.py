@@ -89,7 +89,7 @@ def basicView(request):
             reformated_filter_tag += tag + "&tagFilter="
 
 
-    paginator = Paginator(item_list, 8)   
+    paginator = Paginator(item_list, 12)   
     page_obj = paginator.get_page(page_number)
 
     

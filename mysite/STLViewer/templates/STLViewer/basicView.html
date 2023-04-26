@@ -13,22 +13,8 @@
 
   <section class="py-5 text-center container">
 
-        <h1 class="fw-light">{{category.title}}</h1>
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1&{{ filter_tag }}&search={{search_string}}">&laquo; first</a>
-                    <a href="?page={{ page_obj.previous_page_number }}&{{ filter_tag }}&search={{search_string}}">previous</a>
-                {% endif %}    
-                <span class="current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>    
-                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}&{{ filter_tag }}&search={{search_string}}">next</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}&{{ filter_tag }}&search={{search_string}}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
+      
+      
         {{tag_list|length}} Tags:
         {% for tag in tag_list %}
                       {% if forloop.last %} 
@@ -37,6 +23,21 @@
                         <a href="?tagFilter={{ tag}}">{{ tag}}</a>,
                       {% endif %}
                   {% endfor %}        
+  </section>
+  <section class="py-1 text-center container">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1&{{ filter_tag }}&search={{search_string}}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}&{{ filter_tag }}&search={{search_string}}">previous</a>
+        {% endif %}    
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>    
+         {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&{{ filter_tag }}&search={{search_string}}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&{{ filter_tag }}&search={{search_string}}">last &raquo;</a>
+        {% endif %}
+    </span>
   </section>
   <div class="album py-5 bg-light">
     <div class="container">
