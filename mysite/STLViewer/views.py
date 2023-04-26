@@ -58,7 +58,6 @@ def basicView(request):
     filter_tag = request.GET.getlist("tagFilter")
     search_string = request.GET.get('search',"")
 
-    
   
     #get items, by filter tag or all
     if (len(filter_tag) == 0 or filter_tag[0] ==''):
@@ -68,9 +67,9 @@ def basicView(request):
         taggedResults = set()
         for tag in filter_tag:
             if len(taggedResults) == 0:
-                taggedResults = set(Items.objects.filter(itemid__in=Taggins.objects.filter(tag = tag)).values_list("itemid",flat=True))
+                taggedResults = set(Items.objects.filter(itemid__in=Taggins.objects.filter(tag = tag).values('item_id')).values_list("itemid",flat=True))
             else:
-                taggedResults = set(taggedResults.intersection (Items.objects.filter(itemid__in=Taggins.objects.filter(tag = tag)).values_list("itemid",flat=True)))
+                taggedResults = set(taggedResults.intersection (Items.objects.filter(itemid__in=Taggins.objects.filter(tag = tag).values('item_id')).values_list("itemid",flat=True)))
         
         item_list = Items.objects.filter(itemid__in=taggedResults).filter(name__contains=search_string).order_by("name")
     #tag list
