@@ -27,6 +27,9 @@ class Items(models.Model):
     thumbnail = models.TextField(blank=True, null=True)  # This field type is a guess.
     found = models.IntegerField(blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
     def getTagNames(self):
         returnList = []
         for tag in Taggins.objects.filter(item=self):
