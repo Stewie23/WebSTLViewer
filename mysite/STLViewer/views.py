@@ -66,6 +66,11 @@ def basicView(request):
     else:
         taggedResults = set()
         for tag in filter_tag:
+            if (tag == "noTag"):#special tag for items that currently dont have a tag
+                #list of items with no tags
+                itemsWithTag_list = Taggins.objects.all().values_list("item_id",flat=True).distinct()
+                taggedResults = Items.objects.all().exclude(itemid__in = itemsWithTag_list)
+                break
             if len(taggedResults) == 0:
                 taggedResults = set(Items.objects.filter(itemid__in=Taggins.objects.filter(tag = tag).values('item_id')).values_list("itemid",flat=True))
             else:
@@ -75,9 +80,7 @@ def basicView(request):
     #tag list
     tag_list = Taggins.objects.values_list("tag",flat=True).distinct()
 
-    #list of items with no tags
-    itemsWithTag_list = Taggins.objects.all().values_list("item_id",flat=True).distinct()
-    noTag_list = Items.objects.all().exclude(itemid__in = itemsWithTag_list)
+    
     
     
 
