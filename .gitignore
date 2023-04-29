@@ -2,4 +2,7 @@
 *.pyo
 *.db
 *.jpg
+*.css
+*.js
+*.map
 mysite/static/*
