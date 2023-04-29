@@ -129,3 +129,4 @@ CSS= ['admin/css/vendor/select2/select2.min.css']
 
 # login redirect
 LOGIN_REDIRECT_URL = "/STLViewer/index"
+LOGOUT_REDIRECT_URL = "/accounts/login"
