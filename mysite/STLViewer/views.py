@@ -6,10 +6,11 @@ from django.core.paginator import Paginator
 from django.utils.text import slugify
 from .forms import TagFilter, ItemSearchForm, TagEditor
 from .models import Taggins
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 
 
+@login_required
 def detailView(request):
     if request.method == "POST":
         form = TagEditor(request.POST)
@@ -45,6 +46,7 @@ def detailView(request):
         return HttpResponse(template.render(context,request))
         #return HttpResponse(tags)
 
+@login_required
 def basicView(request):
     #post data, generated from forms
     if request.method == "POST":

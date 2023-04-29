@@ -126,3 +126,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JS= ['admin/js/vendor/select2/select2.full.min.js']
 CSS= ['admin/css/vendor/select2/select2.min.css']
+
+# login redirect
+LOGIN_REDIRECT_URL = "/STLViewer/index"
