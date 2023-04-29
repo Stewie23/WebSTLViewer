@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.utils.text import slugify
 from .forms import TagFilter, ItemSearchForm, TagEditor
 from .models import Taggins
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
 
