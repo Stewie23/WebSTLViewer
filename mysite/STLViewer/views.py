@@ -3,13 +3,11 @@ from django.http import HttpResponse
 from STLViewer.models import Items,Taggins
 from django.template import loader
 from django.core.paginator import Paginator
-from django.utils.text import slugify
 from .forms import TagFilter, ItemSearchForm, TagEditor
 from .models import Taggins
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-
-
+from django.http import HttpResponse
 
 @login_required
 def detailView(request):
@@ -117,3 +115,18 @@ def basicView(request):
 
     return HttpResponse(template.render(context,request))
  
+@login_required
+def download(request):
+    response = HttpResponse()
+    id = request.GET.get("id", None)
+    item = Items.objects.get(itemid=id)
+    file_name = item.name
+    file_path = f'/stl/{item.path}' 
+    # Let NGINX handle it
+    response['X-Accel-Redirect'] = file_path
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(
+        file_name
+    )
+
+    return response
+    
