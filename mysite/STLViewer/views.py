@@ -120,13 +120,11 @@ def download(request):
     response = HttpResponse()
     id = request.GET.get("id", None)
     item = Items.objects.get(itemid=id)
-    file_name = item.name
+    file_name = str(item.name) + ".stl"
     file_path = f'/stl/{item.path}' 
     # Let NGINX handle it
     response['X-Accel-Redirect'] = file_path
-    response['Content-Disposition'] = 'attachment; filename="{}"'.format(
-        file_name
-    )
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
 
     return response
     
