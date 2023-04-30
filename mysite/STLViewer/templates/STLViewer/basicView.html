@@ -66,8 +66,9 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="../item/?id={{item.itemid}}"><button type="button" class="btn btn-sm btn-outline-secondary">STL Details</button></a>
+                  <a href="{% static 'stl/' %}{{ item.path }}" download><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
+
                 </div>
-                <small class="text-muted">Datum</small> 
               </div>
             </div>
           </div>
