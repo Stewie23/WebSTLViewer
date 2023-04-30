@@ -3,11 +3,12 @@ from django.http import HttpResponse
 from STLViewer.models import Items,Taggins
 from django.template import loader
 from django.core.paginator import Paginator
-from .forms import TagFilter, ItemSearchForm, TagEditor
+from .forms import TagFilter, ItemSearchForm, TagEditor,AddItemsForm
 from .models import Taggins
-from django.shortcuts import redirect
+from django.shortcuts import redirect,render,reverse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+import os
 
 @login_required
 def detailView(request):
@@ -127,4 +128,39 @@ def download(request):
     response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
 
     return response
+
+def save_uploaded_file(uploaded_file):
+    file_name = uploaded_file.name
+
+    # Choose a directory to store the uploaded files
+    upload_directory = 'static/stl/upload/'
+    if not os.path.exists(upload_directory):
+        os.makedirs(upload_directory)
+
+    file_path = os.path.join(upload_directory, file_name)
+    relative_path = file_path.split('/stl/')[1]
+
+    with open(file_path, 'wb') as destination:
+        for chunk in uploaded_file.chunks():
+            destination.write(chunk)
+
+    return relative_path, file_name.split('.')[0]
+
+@login_required   
+def create_item(request):
+    if request.method == 'POST':
+        form = AddItemsForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = form.cleaned_data['file']
+            relative_path, file_name = save_uploaded_file(uploaded_file)
+
+            instance = Items(name=file_name, path=relative_path,found=0,thumbnail="Thumbnails/error.jpg")
+            instance.save()
+            item_id = instance.itemid
+            redirect_url = "../item/?id="+str(item_id)
+            return redirect(redirect_url)        
+    else:
+        form = AddItemsForm()
     
+    context = {'form': form}
+    return render(request, 'STLViewer/create_item.html', context)
