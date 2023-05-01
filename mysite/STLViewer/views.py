@@ -9,6 +9,9 @@ from django.shortcuts import redirect,render,reverse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import os
+import base64
+import json
+
 
 @login_required
 def detailView(request):
@@ -133,7 +136,7 @@ def save_uploaded_file(uploaded_file):
     file_name = uploaded_file.name
 
     # Choose a directory to store the uploaded files
-    upload_directory = 'static/stl/upload/'
+    upload_directory = 'STLViewer/static/stl/upload/'
     if not os.path.exists(upload_directory):
         os.makedirs(upload_directory)
 
@@ -164,3 +167,28 @@ def create_item(request):
     
     context = {'form': form}
     return render(request, 'STLViewer/create_item.html', context)
+
+@login_required   
+def updateThumb(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        id = json_data['id']
+        base64_data = json_data['imageData'].split(',')[1]  # Extract base64 data after the comma
+        image_data = base64.b64decode(base64_data)
+        # Process the decoded image data
+        # Example: Save the image to a file
+        upload_directory = 'STLViewer/static/Thumbnails/'
+        file_path = os.path.join(upload_directory, str(id)+'.jpg')
+        with open(file_path, 'wb') as file:
+            file.write(image_data)
+        #update database entry
+        item = Items.objects.get(itemid=id)
+        item.thumbnail = 'Thumbnails/'+ str(id)+'.jpg'
+        # Save the changes
+        item.save()
+        redirect_url = "../STLViewer/item/?id="+str(id)
+        return redirect(redirect_url)
+    else:
+        return  HttpResponse()
+        
+

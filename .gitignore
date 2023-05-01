@@ -6,4 +6,7 @@
 *.js
 *.map
 *.stl
+*.json
 mysite/static/*
+mysite/STLViewer/static/*
+node_modules/

@@ -1,22 +1,42 @@
 {% load static %}
 
 {% include "STLViewer/header.html" %}
+<script type="module" crossorigin src="{% static 'js/renderSTL.js'%}" defer></script>
 </div>
 </nav>
 </header>
 
 {% if item %}
     <ul>
-        {{item.name}} <br>
-        <img src="{% get_static_prefix %}{{item.thumbnail}} ">
+        <div>Name: {{ item.name }} </div>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                <container>
+                    <div>Thumbnail:</div>
+                    <img src="{% get_static_prefix %}{{item.thumbnail}}">
+                </container>
+            </div>
+            <div style="flex: 1;">
+                <container>
+                    3D Render (Refresh Page to see updated Thumbnail):
+                    <div id="app"></div>
+                    <div id="button-container"></div>
+                </container>
+            </div>
+        </div>
+        <script>
+            
+            var stlFile = "{% static '/stl/'|add:item.path %}";
+            var mID ="{{ item.itemid }}";
+            //var myToken = '{csrf_token}';
+        </script>
         <br>
         <form class="form-inline" action="" method="POST">
             {% csrf_token %}
-            {{tagEditor_form}}
-            <input type="hidden" name="id" value="{{item.itemid}}">
+            {{ tagEditor_form }}
+            <input type="hidden" name="id" value="{{ item.itemid }}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Speichern</button>
         </form>
-    </li>
     </ul>
 {% else %}
     <p>No Items.</p>

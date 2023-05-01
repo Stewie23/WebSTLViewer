@@ -56,11 +56,11 @@ class AddItemsForm(forms.Form):
             if file_extension != '.stl':
                 raise forms.ValidationError('Only .stl files are allowed.')
             # Check the file's magic bytes
-            file_path = uploaded_file.temporary_file_path()
-            file_mime = magic.from_file(file_path, mime=True)
-            allowed_mimes = ['model/stl', 'application/octet-stream']
-            if file_mime not in allowed_mimes:
-                raise forms.ValidationError(f'Invalid file format. Only .stl and application/octet-stream files are allowed. (MIME type: {file_mime})')
+            #file_path = uploaded_file.temporary_file_path()
+            #file_mime = magic.from_file(file_path, mime=True)
+            #allowed_mimes = ['model/stl', 'application/octet-stream']
+            #if file_mime not in allowed_mimes:
+                #raise forms.ValidationError(f'Invalid file format. Only .stl and application/octet-stream files are allowed. (MIME type: {file_mime})')
 
         return uploaded_file
   
