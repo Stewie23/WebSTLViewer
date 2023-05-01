@@ -125,11 +125,11 @@ def download(request):
     id = request.GET.get("id", None)
     item = Items.objects.get(itemid=id)
     file_name = str(item.name) + ".stl"
-    file_path = f'/stl/{item.path}' 
     # Let NGINX handle it
-    response['X-Accel-Redirect'] = file_path
+    response['X-Accel-Redirect'] = '/download/' + item.path
     response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
-
+   
+    print(response['X-Accel-Redirect'])
     return response
 
 def save_uploaded_file(uploaded_file):
