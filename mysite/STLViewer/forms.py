@@ -12,16 +12,19 @@ class myMutipleChoiceField(forms.MultipleChoiceField):
           pass
      
 class TagEditor(forms.Form):
-    m_choices = []
-    for value in models.Taggins.objects.values_list("tag",flat=True).distinct():
-            m_choices.append((value,value))
+
     tagEditor = myMutipleChoiceField(
-        choices = m_choices,
-        #choices = models.Taggins.objects.values_list("tag",flat=True).distinct(),
         widget = s2forms.Select2TagWidget(attrs={'data-allow-clear':"true",'data-placeholder': "Select a value",'placeholder':" "}),   
         label="Tags:",
         required=False,
     )
+
+    def __init__(self, *args, **kwargs):
+        super(TagEditor, self).__init__(*args, **kwargs)
+        choices = []
+        for value in models.Taggins.objects.values_list("tag", flat=True).distinct():
+            choices.append((value, value))
+        self.fields['tagEditor'].choices = choices
      
     def clean(self):
         return self.cleaned_data
