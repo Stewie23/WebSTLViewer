@@ -40,6 +40,10 @@ class TagFilter(forms.ModelForm):
     class Meta:
         model = models.Taggins
         fields = [ "tagFilter",]
+
+    def __init__(self, *args, **kwargs):
+        super(TagFilter, self).__init__(*args, **kwargs)
+        self.fields['tagFilter'].queryset = models.Taggins.objects.values_list("tag", flat=True).distinct()
  
 class ItemSearchForm(forms.Form):
     search = forms.CharField(label='Search', max_length=100, required=False)
