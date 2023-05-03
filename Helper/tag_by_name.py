@@ -3,6 +3,7 @@ import sqlite3
 
 def check_tags(name_part, tag):
     # Connect to the SQLite database
+    name_part = ' '.join(name_part)
     conn = sqlite3.connect('stlDatabase.db')
     cursor = conn.cursor()
 
@@ -32,7 +33,7 @@ def check_tags(name_part, tag):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for adding additional tags.")
-    parser.add_argument("-n", "--name", type=str, help="part of the item name")
+    parser.add_argument("-n", "--name", nargs='+',type=str, help="part of the item name")
     parser.add_argument("-t", "--tag", type=str, help="Tag to be added")
     args = parser.parse_args()
 
