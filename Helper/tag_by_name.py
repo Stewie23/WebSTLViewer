@@ -10,6 +10,7 @@ def check_tags(name_part, tag):
     # Retrieve item IDs from the Items table based on the name part
     cursor.execute("SELECT itemID FROM Items WHERE name COLLATE BINARY LIKE ?", ('%' + name_part + '%',))
     item_ids = cursor.fetchall()
+    
 
     for item_id in item_ids:
         # Check if itemID exists in the Taggings table for the given tag
