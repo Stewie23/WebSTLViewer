@@ -12,6 +12,18 @@ import os
 import base64
 import json
 
+@login_required
+def editThumbView(request):
+    if request.method == "POST":
+        pass
+    else:
+        id = request.GET.get("id", None)
+        template = loader.get_template("STLViewer/editThumbView.html")
+        context = {
+
+        } 
+        return HttpResponse(template.render(context,request))
+    
 
 @login_required
 def detailView(request):
@@ -47,7 +59,6 @@ def detailView(request):
             "tagEditor_form":tagEditor_form,
         }    
         return HttpResponse(template.render(context,request))
-        #return HttpResponse(tags)
 
 @login_required
 def basicView(request):

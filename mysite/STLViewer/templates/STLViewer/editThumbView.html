@@ -1,0 +1,25 @@
+{% load static %}
+
+{% include "STLViewer/header.html" %}
+<script type="module" crossorigin src="{% static 'js/renderSTL.js'%}" defer></script>
+</div>
+</nav>
+</header>
+
+<div style="flex: 1;">
+    <container>
+        3D Render (Refresh Page to see updated Thumbnail):
+        <div id="app"></div>
+        <div id="button-container"></div>
+    </container>
+</div>
+</div>
+<script>
+
+var stlFile = "{% static '/stl/'|add:item.path %}";
+var mID ="{{ item.itemid }}";
+</script>
+<br>
+
+
+{% include "STLViewer/footer.html" %}
