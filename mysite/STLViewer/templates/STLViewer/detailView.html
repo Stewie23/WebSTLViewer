@@ -9,13 +9,13 @@
 {% if item %}
     <ul>
         <div>Name: {{ item.name }} </div>
-        <div style="display: flex;">
-            <div style="flex: 1;">
+            <div>
                 <container>
-                    <div>Thumbnail: <a href>Edit</a></div>
+                    <div>Thumbnail: <a href="../thumbeditor/?id={{item.itemid}}">Edit</a></div>
                     <img src="{% get_static_prefix %}{{item.thumbnail}}">
                 </container>
             </div>
+        <br>
         <form class="form-inline" action="" method="POST">
             {% csrf_token %}
             {{ tagEditor_form }}

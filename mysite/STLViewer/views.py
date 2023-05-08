@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
 from django.http import HttpResponse
 from STLViewer.models import Items,Taggins
 from django.template import loader
@@ -11,6 +12,8 @@ from django.http import HttpResponse
 import os
 import base64
 import json
+import shutil
+import tempfile
 
 @login_required
 def editThumbView(request):
@@ -18,9 +21,19 @@ def editThumbView(request):
         pass
     else:
         id = request.GET.get("id", None)
-        template = loader.get_template("STLViewer/editThumbView.html")
-        context = {
+        item = Items.objects.get(itemid=id)
+        template = loader.get_template("STLViewer/editThumbView.html") 
+        src_path = 'STLViewer/static/stl/'+ item.path    
+        dst_dir = 'STLViewer/static/temp/'
 
+        # Generate a random file name for the temporary file
+        with tempfile.NamedTemporaryFile(dir=dst_dir, delete=False) as tmp:
+            dst_path = tmp.name
+            # Copy the file from src_path to dst_path
+            shutil.copyfile(src_path, dst_path)
+        context = {
+            "item":item,
+            'temp_stl':dst_path,
         } 
         return HttpResponse(template.render(context,request))
     
@@ -183,6 +196,13 @@ def create_item(request):
 def updateThumb(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
+        #delte the temp file
+        temp_file_name = json_data['tempfile'].split('/')[-1]
+        try:
+            os.remove('STLViewer/static/temp/'+temp_file_name)
+        except FileNotFoundError:
+            pass
+        
         id = json_data['id']
         base64_data = json_data['imageData'].split(',')[1]  # Extract base64 data after the comma
         image_data = base64.b64decode(base64_data)

@@ -5,21 +5,22 @@
 </div>
 </nav>
 </header>
-
-<div style="flex: 1;">
+<ul>
+<div>
     <container>
         3D Render (Refresh Page to see updated Thumbnail):
         <div id="app"></div>
         <div id="button-container"></div>
     </container>
 </div>
-</div>
 <script>
 
-var stlFile = "{% static '/stl/'|add:item.path %}";
+var stlFile = "{% static '/stl/'|add:temp_stl %}";
 var mID ="{{ item.itemid }}";
 </script>
 <br>
 
+<a href="">Back to Details</a>
+</ul>
 
 {% include "STLViewer/footer.html" %}
