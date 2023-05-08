@@ -33,7 +33,7 @@ def editThumbView(request):
             shutil.copyfile(src_path, dst_path)
         context = {
             "item":item,
-            'temp_stl':dst_path,
+            'temp_stl':tmp.name.split("/")[-1],
         } 
         return HttpResponse(template.render(context,request))
     
@@ -198,11 +198,12 @@ def updateThumb(request):
         json_data = json.loads(request.body)
         #delte the temp file
         temp_file_name = json_data['tempfile'].split('/')[-1]
+       
         try:
             os.remove('STLViewer/static/temp/'+temp_file_name)
         except FileNotFoundError:
             pass
-        
+
         id = json_data['id']
         base64_data = json_data['imageData'].split(',')[1]  # Extract base64 data after the comma
         image_data = base64.b64decode(base64_data)
