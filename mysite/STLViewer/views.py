@@ -19,6 +19,10 @@ from .forms import AddItemsForm, ItemSearchForm, TagEditor, TagFilter
 from .models import Taggins
 
 @login_required
+def recentAdditions(request):
+    pass
+
+@login_required
 def editThumbView(request):
     if request.method == "POST":
         pass

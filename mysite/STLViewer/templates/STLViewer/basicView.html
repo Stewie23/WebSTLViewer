@@ -54,6 +54,7 @@
 
             <div class="card-body">
               <p class="card-text">{{item.name}} <br>
+                <small>
                 Tags: 
                   {% for tag in item.getTagNames %}
                       {% if forloop.last %} 
@@ -62,6 +63,7 @@
                         <a href="?tagFilter={{ tag }}">{{ tag }}</a>,
                       {% endif %}
                   {% endfor %}
+                </small>
     
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
