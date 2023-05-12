@@ -14,6 +14,7 @@ import base64
 import json
 import shutil
 import tempfile
+import hashlib
 
 @login_required
 def editThumbView(request):
@@ -37,7 +38,6 @@ def editThumbView(request):
         } 
         return HttpResponse(template.render(context,request))
     
-
 @login_required
 def detailView(request):
     if request.method == "POST":
@@ -167,11 +167,19 @@ def save_uploaded_file(uploaded_file):
     file_path = os.path.join(upload_directory, file_name)
     relative_path = file_path.split('/stl/')[1]
 
+     
+
     with open(file_path, 'wb') as destination:
         for chunk in uploaded_file.chunks():
             destination.write(chunk)
+    
+    #create file hash, and check for duplicates
+    with open(file_path, "rb") as f:
+        file_hash = hashlib.blake2b()
+        while chunk := f.read(8192):
+            file_hash.update(chunk)
 
-    return relative_path, file_name.split('.')[0]
+    return relative_path, file_name.split('.')[0],file_hash.hexdigest()
 
 @login_required   
 def create_item(request):
@@ -179,9 +187,9 @@ def create_item(request):
         form = AddItemsForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = form.cleaned_data['file']
-            relative_path, file_name = save_uploaded_file(uploaded_file)
+            relative_path, file_name,file_hash = save_uploaded_file(uploaded_file)
 
-            instance = Items(name=file_name, path=relative_path,found=0,thumbnail="Thumbnails/error.jpg")
+            instance = Items(name=file_name, path=relative_path,found=0,hash=file_hash,thumbnail="Thumbnails/error.jpg")
             instance.save()
             item_id = instance.itemid
             redirect_url = "../item/?id="+str(item_id)
