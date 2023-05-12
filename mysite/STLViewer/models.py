@@ -25,7 +25,10 @@ class Items(models.Model):
     path = models.TextField(blank=True, null=True)  # This field type is a guess.
     hash = models.TextField(blank=True, null=True)  # This field type is a guess.
     thumbnail = models.TextField(blank=True, null=True)  # This field type is a guess.
-    found = models.IntegerField(blank=True, null=True)
+    found = models.IntegerField(blank=True, null=True) #legacy field, not needed
+    date_added = models.DateTimeField(auto_now_add=True)  # Add the date_added field
+   
+
 
     def __str__(self):
         return self.name
@@ -38,7 +41,7 @@ class Items(models.Model):
 
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Items'
 
 
