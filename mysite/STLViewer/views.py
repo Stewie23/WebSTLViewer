@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
-from django.http import HttpResponse
-from STLViewer.models import Items,Taggins
-from django.template import loader
-from django.core.paginator import Paginator
-from .forms import TagFilter, ItemSearchForm, TagEditor,AddItemsForm
-from .models import Taggins
-from django.shortcuts import redirect,render,reverse
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-import os
 import base64
+import hashlib
 import json
+import os
 import shutil
 import tempfile
-import hashlib
+
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.shortcuts import redirect, render, reverse
+from django.template import loader
+from django.utils import timezone
+
+from STLViewer.models import Items, Taggins
+from .forms import AddItemsForm, ItemSearchForm, TagEditor, TagFilter
+from .models import Taggins
 
 @login_required
 def editThumbView(request):
@@ -68,7 +70,6 @@ def detailView(request):
 
         dublicates =  Items.objects.filter(hash = item.hash).exclude(itemid=id)
         dublicates = dublicates.values_list("itemid",flat=True)
-        print (dublicates)
 
         tagEditor_form  = TagEditor(initial={'tagEditor': list(tags.values_list("tag", flat=True))})
         
@@ -196,7 +197,15 @@ def create_item(request):
             uploaded_file = form.cleaned_data['file']
             relative_path, file_name,file_hash = save_uploaded_file(uploaded_file)
 
-            instance = Items(name=file_name, path=relative_path,found=0,hash=file_hash,thumbnail="Thumbnails/error.jpg")
+            current_time = timezone.now()
+            instance = Items(
+                name=file_name,
+                path=relative_path,
+                found=0,
+                hash=file_hash,
+                thumbnail="Thumbnails/error.jpg",
+                date_added=current_time
+            )
             instance.save()
             item_id = instance.itemid
             redirect_url = "../item/?id="+str(item_id)
