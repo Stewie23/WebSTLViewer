@@ -65,10 +65,17 @@ def detailView(request):
         template = loader.get_template("STLViewer/detailView.html")
         item = Items.objects.get(itemid=id)
         tags = Taggins.objects.filter(item=item)
+
+        dublicates =  Items.objects.filter(hash = item.hash).exclude(itemid=id)
+        dublicates = dublicates.values_list("itemid",flat=True)
+        print (dublicates)
+
         tagEditor_form  = TagEditor(initial={'tagEditor': list(tags.values_list("tag", flat=True))})
+        
         context = {
             "item":item,
             "tags":tags,
+            "dublicates":dublicates,
             "tagEditor_form":tagEditor_form,
         }    
         return HttpResponse(template.render(context,request))

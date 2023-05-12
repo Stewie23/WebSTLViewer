@@ -15,6 +15,13 @@
                     <img src="{% get_static_prefix %}{{item.thumbnail}}">
                 </container>
             </div>
+            {% if dublicates|length > 0 %}
+            Duplications:
+
+                {% for item in dublicates %}
+                <a href="../item/?id={{item}}">{{item}}</a>
+                {% endfor %}
+            {% endif %}
         <br>
         <form class="form-inline" action="" method="POST">
             {% csrf_token %}
