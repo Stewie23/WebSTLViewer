@@ -5,6 +5,8 @@ import json
 import os
 import shutil
 import tempfile
+from datetime import timedelta
+
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -14,13 +16,46 @@ from django.shortcuts import redirect, render, reverse
 from django.template import loader
 from django.utils import timezone
 
+
+
+
 from STLViewer.models import Items, Taggins
 from .forms import AddItemsForm, ItemSearchForm, TagEditor, TagFilter
 from .models import Taggins
 
+
+
 @login_required
 def recentAdditions(request):
-    pass
+    template = loader.get_template("STLViewer/recentAdditions.html")
+
+    # Get the number of days from query parameter (default: 7)
+    num_days = int(request.GET.get('num_days', 7))
+
+    # Get the number of items from query parameter (default: 10)
+    num_items = int(request.GET.get('num_items', 10))
+
+    # Calculate the start date based on the number of days
+    start_date = timezone.now() - timedelta(days=num_days)
+
+    # Retrieve the latest items based on the date field and number of items
+    latest_items = Items.objects.filter(date_added__gte=start_date).order_by('-date_added')[:num_items]
+
+    tag_editor_forms = []
+
+    for item in latest_items:
+        tags = Taggins.objects.filter(item=item)
+        form = TagEditor(initial={'tagEditor': list(tags.values_list("tag", flat=True))})
+        tag_editor_forms.append(form)
+
+    context = {
+        'latest_items': latest_items,
+        'num_days': num_days,
+        'num_items': num_items,
+        'tag_editor_forms': tag_editor_forms,
+    }
+
+    return HttpResponse(template.render(context, request))
 
 @login_required
 def editThumbView(request):

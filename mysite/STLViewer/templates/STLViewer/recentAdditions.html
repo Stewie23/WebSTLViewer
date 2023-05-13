@@ -1,0 +1,56 @@
+{% load static %}
+{% include "STLViewer/header.html" %}
+
+</div>
+</nav>
+</header>
+{% load zip_lists %}
+
+<h1>Latest Items</h1>
+
+<form method="GET" action="">
+    <label for="num_days">Number of Days:</label>
+    <input type="number" name="num_days" id="num_days" value="{{ num_days }}">
+    <label for="num_items">Number of Items:</label>
+    <input type="number" name="num_items" id="num_items" value="{{ num_items }}">
+    <button type="submit">Filter</button>
+</form>
+
+<ul>
+<table>
+    <thead>
+        <tr>
+            <th>Thumbnail</th>
+            <th>Name</th>
+            <th>Date Added</th>
+            <th>Tags</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in latest_items %}
+            <tr>
+                <td><img src="{% get_static_prefix %}{{ item.thumbnail }}"  width="50" height="50"></td>
+                <td><a href="/STLViewer/item/?id={{ item.itemid }}">{{ item.name }}</a></td>
+                <td>{{ item.date_added }} (UTC)</td>
+                <td>
+                    Tags:
+                    {% for tag in item.getTagNames %}
+                        {% if forloop.last %} 
+                            {{ tag }}
+                        {% else %}
+                            {{ tag }},
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">No items found.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</ul>
+   
+
+{% include "STLViewer/footer.html" %}
