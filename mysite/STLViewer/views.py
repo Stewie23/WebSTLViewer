@@ -43,16 +43,11 @@ def recentAdditions(request):
 
     tag_editor_forms = []
 
-    for item in latest_items:
-        tags = Taggins.objects.filter(item=item)
-        form = TagEditor(initial={'tagEditor': list(tags.values_list("tag", flat=True))})
-        tag_editor_forms.append(form)
 
     context = {
         'latest_items': latest_items,
         'num_days': num_days,
         'num_items': num_items,
-        'tag_editor_forms': tag_editor_forms,
     }
 
     return HttpResponse(template.render(context, request))
