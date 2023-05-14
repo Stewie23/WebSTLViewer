@@ -78,9 +78,15 @@
                         Collections
                     </a>
                     <div class="dropdown-menu" aria-labelledby="collectionsDropdown">
-                        {% for collection in user_collections %}
-                            <a class="dropdown-item" href="{% url 'collection_detail' collection.id %}">{{ collection.name }}</a>
-                        {% endfor %}
+                    <!-- Display user collections -->
+        {% for collection in private_collections %}
+        <a class="dropdown-item" href="{% url 'collection_detail' collection.id %}">{{ collection.name }} (Private)</a>
+    {% endfor %}
+    
+    <!-- Display public collections of all users -->
+    {% for collection in public_collections %}
+        <a class="dropdown-item" href="{% url 'collection_detail' collection.id %}">{{ collection.name }} (Public)</a>
+    {% endfor %}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{% url 'create_or_edit_collection' %}">Create New Collection</a>
                     </div>

@@ -46,17 +46,17 @@
                 Tags: 
                   {% for tag in item.getTagNames %}
                       {% if forloop.last %} 
-                        <a href="?tagFilter={{ tag }}">{{ tag }}</a>
+                        <a href="../../index/?tagFilter={{ tag }}">{{ tag }}</a>
                       {% else %}
-                        <a href="?tagFilter={{ tag }}">{{ tag }}</a>,
+                        <a href="../../index/?tagFilter={{ tag }}">{{ tag }}</a>,
                       {% endif %}
                   {% endfor %}
                 </small>
     
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="../item/?id={{item.itemid}}"><button type="button" class="btn btn-sm btn-outline-secondary">STL Details</button></a>
-                  <a href="../download/?id={{item.itemid}}"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
+                  <a href="../../item/?id={{item.itemid}}"><button type="button" class="btn btn-sm btn-outline-secondary">STL Details</button></a>
+                  <a href="../../download/?id={{item.itemid}}"><button type="button" class="btn btn-sm btn-outline-secondary">Download</button></a>
                 </div>
               </div>
 

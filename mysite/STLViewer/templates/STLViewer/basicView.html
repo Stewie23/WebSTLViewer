@@ -77,8 +77,8 @@
               {% csrf_token %}
               <select name="collection">
                 <option value="">Add to collection</option>
-                {% for collection in user_collections %}
-                  <option value="{{ collection.id }}">{{ collection.name }}</option>
+                {% for collection in private_collections %}
+                  <option value="{{ collection.id }}">{{ collection.name }} (Private)</option>
                 {% endfor %}
                 {% for collection in public_collections %}
                   <option value="{{ collection.id }}">{{ collection.name }} (Public)</option>

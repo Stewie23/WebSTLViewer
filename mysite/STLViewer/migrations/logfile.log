@@ -1,0 +1,145 @@
+ERROR 2023-05-13 09:37:43,256 log 218754 139938537394624 Internal Server Error: /STLViewer/new/
+Traceback (most recent call last):
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+KeyError: 'zip_lists'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/home/ben/django-project/mysite/STLViewer/views.py", line 30, in recentAdditions
+    template = loader.get_template("STLViewer/recentAdditions.html")
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/backends/django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/base.py", line 513, in parse
+    raise self.error(token, e)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+  File "/home/ben/django-project/env/lib/python3.10/site-packages/django/template/defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'zip_lists' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+i18n
+l10n
+log
+static
+tz
+WARNING 2023-05-13 09:37:45,821 log 218755 139938537394624 Not Found: /.env
+WARNING 2023-05-13 09:37:46,168 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-13 09:39:54,395 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-13 09:42:39,610 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-13 09:43:05,401 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-13 09:44:00,020 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 09:45:00,345 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 10:12:24,539 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-13 10:12:24,723 log 218756 139938537394624 Not Found: /HNAP1/
+WARNING 2023-05-13 10:43:35,834 log 218755 139938537394624 Not Found: /explore
+WARNING 2023-05-13 10:46:40,419 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 11:36:13,583 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-13 11:58:58,349 log 218755 139938537394624 Not Found: /portal/redlion
+WARNING 2023-05-13 12:01:22,706 log 218754 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-13 12:22:42,862 log 218755 139938537394624 Not Found: /actuator/health
+WARNING 2023-05-13 12:24:49,850 log 218754 139938537394624 Not Found: /hudson
+WARNING 2023-05-13 13:00:12,900 log 218756 139938537394624 Not Found: /phpmyadmin/index.php
+WARNING 2023-05-13 13:00:13,151 log 218755 139938537394624 Not Found: /pmd/index.php
+WARNING 2023-05-13 13:26:59,400 log 218754 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-13 13:36:04,943 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-13 13:43:52,280 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-13 13:46:15,843 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 14:11:32,958 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-13 14:40:08,384 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 14:54:31,463 log 218756 139938537394624 Not Found: /.env
+WARNING 2023-05-13 14:54:31,645 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 14:58:41,127 log 218755 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-13 15:04:41,702 log 218754 139938537394624 Not Found: /.env
+WARNING 2023-05-13 15:04:41,820 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 15:19:00,415 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-13 15:39:13,096 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-13 15:42:04,640 log 218754 139938537394624 Not Found: /_profiler/phpinfo
+WARNING 2023-05-13 15:55:24,763 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 15:55:24,804 log 218754 139938537394624 Not Found: /HNAP1/
+WARNING 2023-05-13 15:55:44,136 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-13 16:54:50,528 log 218756 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-13 17:31:42,460 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-13 19:39:09,026 log 218755 139938537394624 Not Found: /manager/html
+WARNING 2023-05-13 19:57:36,223 log 218755 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-13 19:59:42,253 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-13 19:59:42,308 log 218754 139938537394624 Not Found: /HNAP1/
+WARNING 2023-05-13 20:54:13,740 log 218755 139938537394624 Not Found: /stalker_portal/server/load.php
+WARNING 2023-05-13 21:43:09,105 log 218755 139938537394624 Not Found: /docker-compose.yml
+WARNING 2023-05-13 22:12:48,776 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-13 23:51:09,838 log 218756 139938537394624 Not Found: /druid/index.html
+WARNING 2023-05-14 00:11:36,481 log 218756 139938537394624 Not Found: /_profiler/phpinfo
+WARNING 2023-05-14 00:23:53,183 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-14 00:52:10,993 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 01:05:02,598 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 01:05:03,119 log 218756 139938537394624 Not Found: /HNAP1/
+WARNING 2023-05-14 01:33:40,220 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 01:35:10,266 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-14 01:35:10,285 log 218755 139938537394624 Not Found: /client/get_targets
+WARNING 2023-05-14 01:35:10,300 log 218755 139938537394624 Not Found: /upl.php
+WARNING 2023-05-14 01:35:10,324 log 218755 139938537394624 Not Found: /geoip/
+WARNING 2023-05-14 01:35:10,339 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-14 01:54:31,612 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-14 02:24:37,335 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-14 02:24:37,526 log 218755 139938537394624 Not Found: /HNAP1/
+WARNING 2023-05-14 02:37:59,750 log 218754 139938537394624 Not Found: /_profiler/phpinfo
+WARNING 2023-05-14 02:51:18,216 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 03:43:53,178 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 04:42:32,675 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-14 05:35:01,598 log 218756 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-14 06:17:17,130 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-14 07:17:12,745 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-14 07:43:48,611 log 218755 139938537394624 Not Found: /_profiler/phpinfo
+WARNING 2023-05-14 08:36:41,928 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 09:20:12,261 log 218754 139938537394624 Not Found: /.env
+WARNING 2023-05-14 11:10:40,900 log 218756 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-14 11:30:59,748 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 12:32:54,510 log 218755 139938537394624 Not Found: /_profiler/phpinfo
+WARNING 2023-05-14 13:14:29,135 log 218756 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-14 13:40:06,543 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-14 13:43:48,174 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-14 15:09:10,639 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-14 15:34:02,638 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 15:43:58,059 log 218755 139938537394624 Not Found: /boaform/admin/formLogin
+WARNING 2023-05-14 15:44:27,873 log 218756 139938537394624 Not Found: /.env
+WARNING 2023-05-14 16:22:18,643 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-14 16:22:18,665 log 218755 139938537394624 Not Found: /
+WARNING 2023-05-14 16:40:49,657 log 218755 139938537394624 Not Found: /.env
+WARNING 2023-05-14 16:40:49,943 log 218756 139938537394624 Not Found: /
+WARNING 2023-05-14 17:44:41,994 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 18:03:28,781 log 218754 139938537394624 Not Found: /.env
+WARNING 2023-05-14 18:03:29,562 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 18:57:47,955 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 19:29:28,283 log 218754 139938537394624 Not Found: /.env
+WARNING 2023-05-14 19:29:30,473 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 19:34:34,317 log 218756 139938537394624 Not Found: /.env
+WARNING 2023-05-14 19:34:34,361 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 20:05:34,844 log 218756 139938537394624 Not Found: /_profiler/phpinfo
+WARNING 2023-05-14 20:13:43,799 log 218754 139938537394624 Not Found: /
+WARNING 2023-05-14 20:17:46,054 log 231537 139783486493120 Not Found: /boaform/admin/formLogin

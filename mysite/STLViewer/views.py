@@ -30,18 +30,25 @@ def collection_detail(request, pk):
     collection = get_object_or_404(Collection, pk=pk)
 
     # Get items in the collection
-    item_list = collection.items.all()
+    item_list = collection.items.all().order_by("name")
 
     # Pagination
     paginator = Paginator(item_list, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # Fetch public collections of all users
+    public_collections = Collection.objects.filter(privacy='public')
+
+    # Fetch private collections of the logged-in user
+    private_collections = Collection.objects.filter(privacy='private', owner=request.user)
+
     # Other context variables
     context = {
         'page_obj': page_obj,
         'collection': collection,
-        'user_collections': request.user.collection_set.all()  # Fetch user's collections
+        'public_collections': public_collections,
+        'private_collections': private_collections
     }
 
     return render(request, 'STLViewer/collection_detail.html', context)
@@ -71,14 +78,16 @@ def add_to_collection(request, item_id):
     
     # Get the current page number and query parameters
     current_page = request.GET.get('page')
+    print(current_page)
     query_params = request.GET.copy()
+    
 
     # Add the current page number to the query parameters
     query_params['page'] = current_page
 
     # Convert the query parameters back to a URL-encoded string
     query_string = query_params.urlencode()
-
+    
     # Build the redirect URL with the query string
     redirect_url = f'/STLViewer/index/?{query_string}'
 
@@ -102,7 +111,18 @@ def create_or_edit_collection(request, collection_id=None):
     else:
         form = CollectionForm(instance=collection)
 
-    return render(request, 'STLViewer/create_or_edit_collection.html', {'form': form, 'collection': collection,'user_collections': request.user.collection_set.all()})
+    # Fetch public collections of all users
+    public_collections = Collection.objects.filter(privacy='public')
+
+    # Fetch private collections of the logged-in user
+    private_collections = Collection.objects.filter(privacy='private', owner=request.user)
+
+
+    return render(request, 'STLViewer/create_or_edit_collection.html', {
+        'form': form,
+        'collection': collection,
+    })
+
 
 @login_required
 def recentAdditions(request):
@@ -251,6 +271,13 @@ def basicView(request):
     paginator = Paginator(item_list, 12)   
     page_obj = paginator.get_page(page_number)
 
+    # Fetch public collections of all users
+    public_collections = Collection.objects.filter(privacy='public')
+
+    # Fetch private collections of the logged-in user
+    private_collections = Collection.objects.filter(privacy='private', owner=request.user)
+
+
     
 
     context = {
@@ -260,7 +287,8 @@ def basicView(request):
         'filter_form':filter_form,
         'search_form':search_form,
         'search_string':search_string,
-        'user_collections': request.user.collection_set.all()  # Fetch user's collections
+        'public_collections': public_collections,
+        'private_collections': private_collections,
 
     }  
 
