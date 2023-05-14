@@ -12,7 +12,9 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from django.shortcuts import redirect, render, reverse
+from django.shortcuts import redirect, render, get_object_or_404
+
+
 from django.template import loader
 from django.utils import timezone
 
@@ -20,10 +22,87 @@ from django.utils import timezone
 
 
 from STLViewer.models import Items, Taggins
-from .forms import AddItemsForm, ItemSearchForm, TagEditor, TagFilter
-from .models import Taggins
+from .forms import AddItemsForm, ItemSearchForm, TagEditor, TagFilter, CollectionForm
+from .models import Taggins, Collection
 
+@login_required
+def collection_detail(request, pk):
+    collection = get_object_or_404(Collection, pk=pk)
 
+    # Get items in the collection
+    item_list = collection.items.all()
+
+    # Pagination
+    paginator = Paginator(item_list, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Other context variables
+    context = {
+        'page_obj': page_obj,
+        'collection': collection,
+        'user_collections': request.user.collection_set.all()  # Fetch user's collections
+    }
+
+    return render(request, 'STLViewer/collection_detail.html', context)
+
+@login_required
+def remove_from_collection(request, collection_id, item_id):
+    collection = get_object_or_404(Collection, id=collection_id)
+    item = get_object_or_404(Items, itemid=item_id)
+
+    if request.method == 'POST':
+        collection.items.remove(item)
+
+    # Build the redirect URL with the collection's primary key (pk)
+    redirect_url = f'/STLViewer/collection/{collection_id}/?{request.GET.urlencode()}'
+
+    return redirect(redirect_url)
+
+@login_required
+def add_to_collection(request, item_id):
+    item = get_object_or_404(Items, itemid=item_id)
+    
+    if request.method == 'POST':
+        collection_id = request.POST.get('collection')
+        collection = get_object_or_404(Collection, id=collection_id)
+        collection.items.add(item)
+        collection.save()
+    
+    # Get the current page number and query parameters
+    current_page = request.GET.get('page')
+    query_params = request.GET.copy()
+
+    # Add the current page number to the query parameters
+    query_params['page'] = current_page
+
+    # Convert the query parameters back to a URL-encoded string
+    query_string = query_params.urlencode()
+
+    # Build the redirect URL with the query string
+    redirect_url = f'/STLViewer/index/?{query_string}'
+
+    return redirect(redirect_url)
+    
+@login_required
+def create_or_edit_collection(request, collection_id=None):
+    if collection_id:
+        collection = get_object_or_404(Collection, id=collection_id)
+    else:
+        collection = None
+
+    if request.method == 'POST':
+        form = CollectionForm(request.POST, instance=collection)
+        if form.is_valid():
+            collection = form.save(commit=False)
+            collection.owner = request.user
+            collection.save()
+            return redirect('collection_detail', pk=collection.id)
+
+    else:
+        form = CollectionForm(instance=collection)
+
+    return render(request, 'STLViewer/create_or_edit_collection.html', {'form': form, 'collection': collection,'user_collections': request.user.collection_set.all()})
 
 @login_required
 def recentAdditions(request):
@@ -181,6 +260,8 @@ def basicView(request):
         'filter_form':filter_form,
         'search_form':search_form,
         'search_string':search_string,
+        'user_collections': request.user.collection_set.all()  # Fetch user's collections
+
     }  
 
     return HttpResponse(template.render(context,request))

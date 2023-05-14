@@ -5,6 +5,11 @@ from . import models
 import os
 import magic
 
+class CollectionForm(forms.ModelForm):
+    class Meta:
+        model = models.Collection
+        fields = ['name', 'privacy']
+
 
 class myMutipleChoiceField(forms.MultipleChoiceField):
 #override the django MutipleChoiceField to allow new values...

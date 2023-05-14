@@ -1,0 +1,20 @@
+<!-- create_or_edit_collection.html -->
+
+{% load static %}
+
+{% include "STLViewer/header.html" %}
+</div>
+</nav>
+</header>
+
+{% block content %}
+  <h1>{% if collection %}Edit Collection{% else %}Create Collection{% endif %}</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}
+
+{% include "STLViewer/footer.html" %}

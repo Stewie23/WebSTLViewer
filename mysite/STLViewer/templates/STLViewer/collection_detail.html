@@ -1,31 +1,19 @@
 {% load static %}
 {% include "STLViewer/header.html" %}
 
-        <form class="form-inline" action="/STLViewer/index/" method="get">
-        {{filter_form}}
-        {{search_form}}
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Suchen</button>
-      </form>
-    </div>
-  </nav>
+</div>
+</nav>
 </header>
 <main>
 
-  <section class="py-5 text-center container small">
 
-      
-      
-        {{tag_list|length}} Tags:
-        {% for tag in tag_list %}
-                      {% if forloop.last %} 
-                        <a href="?tagFilter={{ tag}}">{{ tag}}</a>
-                      {% else %}
-                        <a href="?tagFilter={{ tag}}">{{ tag}}</a>,
-                      {% endif %}
-                  {% endfor %}        
-                  Filter Items without Tags: <a href="?tagFilter=noTag">No Tag</a>
-  </section>
   <section class="py-1 text-center container">
+    <h1>{{ collection.name }}</h1>
+    {% if collection.privacy == 'public' %}
+    <p>Public Collection</p>
+{% else %}
+    <p>Private Collection</p>
+{% endif %}
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1&{{ filter_tag }}&search={{search_string}}">&laquo; first</a>
@@ -73,20 +61,11 @@
               </div>
 
             </div>
-            <form method="POST" action="{% url 'add_to_collection' item.itemid %}">
-              {% csrf_token %}
-              <select name="collection">
-                <option value="">Add to collection</option>
-                {% for collection in user_collections %}
-                  <option value="{{ collection.id }}">{{ collection.name }}</option>
-                {% endfor %}
-                {% for collection in public_collections %}
-                  <option value="{{ collection.id }}">{{ collection.name }} (Public)</option>
-                {% endfor %}
-              </select>
-      
-              <button type="submit">Add</button>
-            </form>
+            <!-- Add remove from collection button -->
+        <form method="POST" action="{% url 'remove_from_collection' collection.id item.itemid %}">
+          {% csrf_token %}
+          <button type="submit">Remove from Collection</button>
+      </form>
           </div>
         </div>
         {% endfor %}

@@ -8,6 +8,21 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 
 from django.db import models
+from django.contrib.auth.models import User
+
+class Collection(models.Model):
+    PRIVACY_CHOICES = (
+        ('public', 'Public'),
+        ('private', 'Private'),
+    )
+
+    name = models.CharField(max_length=255)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    privacy = models.CharField(max_length=10, choices=PRIVACY_CHOICES, default='public')
+    items = models.ManyToManyField('Items')
+
+    def __str__(self):
+        return self.name
 
 
 class Comments(models.Model):
